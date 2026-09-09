@@ -1,0 +1,67 @@
+// Sonnet 4.6 contributed
+
+@use '../modal';
+
+.modal {
+  width: 920px;
+}
+
+.modal-body {
+  padding: 1.5rem 1.75rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.intro {
+  font-size: var(--font-base);
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+
+  code {
+    color: var(--text-secondary);
+    background: var(--bg-code);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: var(--font-sm);
+  }
+}
+
+pre {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.1rem;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  overflow-x: auto;
+  line-height: 1.6;
+  margin: 0;
+
+  code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+
+    .keyword {
+      color: #c792ea;
+    }
+
+    .const {
+      color: #ffcb6b;
+    }
+
+    .fn {
+      color: #82aaff;
+    }
+
+    .decorator {
+      color: #ffd166;
+    }
+
+    .comment {
+      color: var(--text-muted);
+    }
+
+    .class {
+      color: #89ddff;
+    }
+  }
+}

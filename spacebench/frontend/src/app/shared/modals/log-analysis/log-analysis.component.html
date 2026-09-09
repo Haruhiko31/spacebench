@@ -1,0 +1,239 @@
+<div class="overlay">
+    <div class="modal" [class.compare-active]="compareMode === 'comparing'" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h3>
+                {{ analysis.name }} - RUN ID => {{ analysis.id }}
+                <span *ngIf="comparisonAnalysis && compareMode === 'comparing'" class="vs-label">
+                    vs {{ comparisonAnalysis.name }} - RUN ID => {{ comparisonAnalysis.id }}
+                </span>
+            </h3>
+            <button class="btn-close" [class.no-hover]="loading" (click)="!loading && close.emit()">×</button>
+        </div>
+
+        <!-- ═══════ BODY ═══════ -->
+
+        <div class="modal-body">
+
+            <!-- ── Mode: Selecting ── -->
+
+            <div *ngIf="compareMode === 'selecting'" class="selection-panel">
+                <p class="section-label">Sélectionnez une analyse à comparer</p>
+
+                <div *ngIf="candidatesLoading" class="selection-loading">Chargement…</div>
+
+                <div *ngIf="!candidatesLoading && !candidates.length" class="selection-empty">
+                    Aucune autre analyse disponible.
+                </div>
+
+                <div class="candidate-list" *ngIf="!candidatesLoading && candidates.length">
+                    <div *ngFor="let c of candidates"
+                         class="candidate-row"
+                         (click)="selectComparison(c)">
+                        <span class="candidate-name">{{ c.name }}</span>
+                        <span class="candidate-model">{{ c.orbital_model }}</span>
+                        <span class="badge-sm" [class]="c.status | lowercase">{{ c.status }}</span>
+                        <span class="candidate-date">{{ c.created_at }}</span>
+                    </div>
+                </div>
+
+                <button class="btn-back" (click)="compareMode = 'off'">← Retour</button>
+            </div>
+
+            <!-- ── Mode: Comparing (side by side) ── -->
+
+            <ng-container *ngIf="compareMode === 'comparing'">
+                <div class="compare-side">
+                    <ng-container *ngTemplateOutlet="panelTpl; context: {
+                        a: analysis, l: logs, sc: statusColor, ice: isCustomEstimator
+                    }"></ng-container>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="compare-side">
+                    <ng-container *ngTemplateOutlet="panelTpl; context: {
+                        a: comparisonAnalysis!, l: comparisonLogs, sc: comparisonStatusColor, ice: comparisonIsCustomEstimator
+                    }"></ng-container>
+                </div>
+            </ng-container>
+
+            <!-- ── Mode: Normal (default) ── -->
+
+            <ng-container *ngIf="compareMode === 'off'">
+                <div class="panel-config">
+                    <ng-container *ngTemplateOutlet="configTpl; context: {
+                        a: analysis, sc: statusColor, ice: isCustomEstimator
+                    }"></ng-container>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="panel-logs">
+                    <p class="section-label">Logs d'exécution</p>
+                    <ng-container *ngTemplateOutlet="logsTpl; context: { l: logs }"></ng-container>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- ═══════ FOOTER ═══════ -->
+
+        <div class="modal-footer">
+            <button *ngIf="compareMode === 'comparing'" class="btn-compare" (click)="exitCompare()">
+                <lucide-icon name="x" [size]="14"></lucide-icon>
+                Quitter la comparaison
+            </button>
+            <button *ngIf="compareMode === 'off'" class="btn-compare" (click)="startCompare()">
+                <lucide-icon name="scale" [size]="14"></lucide-icon>
+                Comparer
+            </button>
+            <button class="btn-close" [class.no-hover]="loading" (click)="!loading && close.emit()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED TEMPLATES
+     ═══════════════════════════════════════════════════════════ -->
+
+<!-- Full panel (config + logs) used in compare mode -->
+<ng-template #panelTpl let-a="a" let-l="l" let-sc="sc" let-ice="ice">
+    <div class="compare-inner">
+        <p class="compare-title">{{ a.name }}</p>
+        <ng-container *ngTemplateOutlet="configTpl; context: { a: a, sc: sc, ice: ice }"></ng-container>
+
+        <p class="section-label" style="margin-top: 1rem">Logs d'exécution</p>
+        <ng-container *ngTemplateOutlet="logsTpl; context: { l: l }"></ng-container>
+    </div>
+</ng-template>
+
+<!-- Config + Metrics + Files -->
+<ng-template #configTpl let-a="a" let-sc="sc" let-ice="ice">
+
+    <!-- Configuration (accordion) -->
+    <p class="section-label toggle" (click)="showConfig = !showConfig">
+        <span class="chevron" [class.open]="showConfig">›</span>
+        Configuration
+    </p>
+    <div class="accordion-body" [class.collapsed]="!showConfig">
+        <!-- Orbital Model -->
+        <div class="info-row">
+            <span class="info-key">Modèle orbital</span>
+            <span class="info-val">{{ a.orbital_model }}</span>
+        </div>
+
+        <!-- Estimateur -->
+        <div class="info-row">
+            <span class="info-key">Estimateur</span>
+            <span class="info-val">{{ a.estimator_type }}</span>
+        </div>
+
+        <!-- Max Iteration -->
+        <div class="info-row">
+            <span class="info-key">Max itération</span>
+            <span class="info-val">{{ a.max_iteration }}</span>
+        </div>
+
+        <!-- Convergence Tolerance -->
+        <div class="info-row">
+            <span class="info-key">Tolérance</span>
+            <span class="info-val">{{ a.tolerance }}</span>
+        </div>
+
+        <!-- Date -->
+        <div class="info-row">
+            <span class="info-key">Date</span>
+            <span class="info-val">{{ a.created_at }}</span>
+        </div>
+
+        <!-- Status -->
+        <div class="info-row">
+            <span class="info-key">Statut</span>
+            <span class="info-val" [style.color]="sc">{{ a.status }}</span>
+        </div>
+    </div>
+
+
+    <!-- Fichiers (accordion) -->
+    <p class="section-label toggle" style="margin-top: 1rem" (click)="showFiles = !showFiles">
+        <span class="chevron" [class.open]="showFiles">›</span>
+        Fichiers
+    </p>
+    <div class="accordion-body" [class.collapsed]="!showFiles">
+        <button class="btn-dl" [disabled]="!a.rinexFileId" (click)="a.rinexFileId && downloadFile(a.rinexFileId, 'rnx')">
+            <span class="dl-arrow">↓</span> Données RINEX - Mission
+        </button>
+        <button class="btn-dl" *ngFor="let rsoFileId of a.rsoFileIds; let i = index" [disabled]="!rsoFileId"
+                (click)="rsoFileId && downloadFile(rsoFileId, 'sp3')">
+            <span class="dl-arrow">↓</span> Orbite RSO SP3 - Mission ({{ i + 1 }})
+        </button>
+        <button class="btn-dl" [disabled]="!a.gnssSp3FileId"
+                (click)="a.gnssSp3FileId && downloadFile(a.gnssSp3FileId, 'sp3')">
+            <span class="dl-arrow">↓</span> Orbite SP3 - IGS
+        </button>
+        <button class="btn-dl" [disabled]="!a.clkFileId" (click)="a.clkFileId && downloadFile(a.clkFileId, 'clk_30s')">
+            <span class="dl-arrow">↓</span> Clock - IGS
+        </button>
+        <button *ngIf="ice" class="btn-dl" [disabled]="!a.estimatorFileId"
+                (click)="a.estimatorFileId && downloadFile(a.estimatorFileId, 'py')">
+            <span class="dl-arrow">↓</span> Estimateur (.py)
+        </button>
+
+        <div *ngIf="compareMode !== 'comparing'" class="right-btn">
+            <button class="btn-dl right" (click)="downloadAllFile()" [disabled]="loading">
+                <span *ngIf="!loading" class="dl-arrow">↓↓</span>
+                <span *ngIf="loading" class="spinner"></span>
+                {{ loading ? 'Téléchargement...' : 'All Files' }}
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Results (accordion) -->
+    <p class="section-label toggle mt-2" (click)="showResults = !showResults">
+        <span class="chevron" [class.open]="showResults">›</span>
+        Résultats
+    </p>
+    <div *ngIf="a.rms_3d != null" class="accordion-body" [class.collapsed]="!showResults">
+        <div class="info-row">
+            <span class="info-key">RMS 3D</span>
+            <span *ngIf="a.rms_3d > 0" class="info-val result">{{ a.rms_3d }} cm</span>
+            <span *ngIf="a.rms_3d == 0" class="info-val result">None</span>
+        </div>
+        <div class="info-row">
+            <span class="info-key">RMS Radial</span>
+            <span *ngIf="a.rms_radial > 0" class="info-val result">{{ a.rms_radial }} cm</span>
+            <span *ngIf="a.rms_radial == 0" class="info-val result warn">None</span>
+        </div>
+        <div class="info-row">
+            <span class="info-key">RMS Along</span>
+            <span *ngIf="a.rms_along > 0" class="info-val result">{{ a.rms_along }} cm</span>
+            <span *ngIf="a.rms_along == 0" class="info-val result warn">None</span>
+        </div>
+        <div class="info-row">
+            <span class="info-key">RMS Cross</span>
+            <span *ngIf="a.rms_cross > 0" class="info-val result">{{ a.rms_cross }} cm</span>
+            <span *ngIf="a.rms_cross == 0" class="info-val result warn">None</span>
+        </div>
+    </div>
+
+
+
+
+</ng-template>
+
+<!-- Logs console -->
+<ng-template #logsTpl let-l="l">
+    <div class="log-console">
+        <div *ngFor="let log of l" class="log-line" [ngClass]="'log-' + log.level">
+            <span>[{{ log.created_at | date:'dd/MM/yyyy HH:mm:ss' }}]</span>
+            <span class="log-level">[{{ log.level | uppercase }}]</span>
+            <span>[{{ log.phase | uppercase }}]</span>
+            <span class="log-msg">{{ log.message }}</span>
+        </div>
+    </div>
+    <ng-container *ngIf="l.length">
+        {{ l[0].created_at | date:'dd/MM/yyyy HH:mm:ss' }} → {{ l[l.length - 1].created_at | date:'dd/MM/yyyy HH:mm:ss' }}
+    </ng-container>
+
+</ng-template>

@@ -1,0 +1,26 @@
+<canvas #sky class="sky"></canvas>
+
+<div class="login-page">
+  <div class="orbital-system">
+
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+
+    <!-- Login card -->
+    <div class="login-card">
+      <h1>SpaceBench</h1>
+      <p class="subtitle">POD Framework</p>
+
+      <form (ngSubmit)="submit()">
+        <input type="text"     [(ngModel)]="username" name="username" placeholder="Utilisateur"  autocomplete="username"         required />
+        <input type="password" [(ngModel)]="password" name="password" placeholder="Mot de passe" autocomplete="current-password" required />
+        <p class="error" *ngIf="error">{{ error }}</p>
+        <button type="submit" [disabled]="loading">
+          <span *ngIf="!loading">Connexion</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>

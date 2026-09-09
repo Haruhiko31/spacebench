@@ -1,0 +1,361 @@
+<div class="overlay">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h3>Formats de fichiers</h3>
+            <button class="btn-close" (click)="close.emit()">×</button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Données mission -->
+            <div class="section">
+                <div class="entity-header">
+                    <span class="entity-label mission">Données mission</span>
+                    <span class="entity-origin">GFZ / ISDC</span>
+                </div>
+
+                <div class="file-block">
+                    <div class="file-block-header">
+                        <span class="file-name">RINEX 2</span>
+                        <code class="file-ext">.rnx</code>
+                        <span class="file-role">Observations LEO embarquées</span>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Ligne époque</td>
+                            <td><code> 10 7 19 0 0 0.0 0 7</code></td>
+                            <td>aa mm jj hh mm ss — flag — nb sats</td>
+                        </tr>
+                        <tr>
+                            <td>Liste sats</td>
+                            <td><code>19 24 32 22 3 14 16</code></td>
+                            <td>PRN GPS</td>
+                        </tr>
+                        <tr>
+                            <td>Types obs.</td>
+                            <td><code>L1 L2 C1 P1 P2 LP1 SA S1 S2</code></td>
+                            <td>9 types, définis dans l'en-tête</td>
+                        </tr>
+                        <tr>
+                            <td>Observation</td>
+                            <td><code>-5084084.862</code></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-content-end pt-3 gap-2">
+                        <button class="custom-btn" (click)="showErrorCode('RINEX')">CODES ERREURS</button>
+                        <button class="custom-btn" (click)="showExample('RINEX 2')">EXEMPLE DE FICHIER</button>
+                    </div>
+
+
+                </div>
+
+                <div class="file-block">
+                    <div class="file-block-header">
+                        <span class="file-name">RSO SP3</span>
+                        <code class="file-ext">.sp3</code>
+                        <span class="file-role">Orbite de référence LEO</span>
+                        <span class="badge-truth">ground truth</span>
+                    </div>
+                    <p class="file-note">2 arcs par jour (~26 h chacun, chevauchement intentionnel).</p>
+
+                    <div class="sp3-tabs">
+                        <button [class.active]="rsoSp3Tab === 'P'" (click)="rsoSp3Tab = 'P'">P — Position</button>
+                        <button [class.active]="rsoSp3Tab === 'V'" (click)="rsoSp3Tab = 'V'">V — Vitesse</button>
+                    </div>
+
+                    <table *ngIf="rsoSp3Tab === 'P'">
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Enregistrement</td>
+                            <td><code>P L06</code></td>
+                            <td>P + identifiant LEO (L06 = CHAMP)</td>
+                        </tr>
+                        <tr>
+                            <td>X (km)</td>
+                            <td><code>5827.793696</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Y (km)</td>
+                            <td><code>-217.911262</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Z (km)</td>
+                            <td><code>3139.158246</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Horloge (µs)</td>
+                            <td><code>999999.999999</code></td>
+                            <td>horloge estimée époque par époque</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table *ngIf="rsoSp3Tab === 'V'">
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Enregistrement</td>
+                            <td><code>V L06</code></td>
+                            <td>V + identifiant LEO (même satellite que P)</td>
+                        </tr>
+                        <tr>
+                            <td>Ẋ (dm/s)</td>
+                            <td><code>-1.234567</code></td>
+                            <td>Vélocité X — décimètres/seconde</td>
+                        </tr>
+                        <tr>
+                            <td>Ẏ (dm/s)</td>
+                            <td><code>7.654321</code></td>
+                            <td>Vélocité Y</td>
+                        </tr>
+                        <tr>
+                            <td>Ż (dm/s)</td>
+                            <td><code>-3.141592</code></td>
+                            <td>Vélocité Z</td>
+                        </tr>
+                        <tr>
+                            <td>Taux d'horloge</td>
+                            <td><code>999999.999999</code></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-content-end pt-3 gap-2">
+                        <button class="custom-btn" (click)="showErrorCode('SP3')">CODES ERREURS</button>
+                        <button class="custom-btn" (click)="showExample('SP3')">EXEMPLE DE FICHIER</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Produits IGS -->
+            <div class="section">
+                <div class="entity-header">
+                    <span class="entity-label igs">Produits IGS</span>
+                    <span class="entity-origin">CDDIS repro2 — semaine GPS + jour</span>
+                </div>
+
+                <div class="file-block">
+                    <div class="file-block-header">
+                        <span class="file-name">IGS SP3</span>
+                        <code class="file-ext">.sp3</code>
+                        <span class="file-role">Orbites constellation GPS</span>
+                    </div>
+
+                    <div class="sp3-tabs">
+                        <button [class.active]="igsSp3Tab === 'P'" (click)="igsSp3Tab = 'P'">P — Position</button>
+                        <button [class.active]="igsSp3Tab === 'V'" (click)="igsSp3Tab = 'V'">V — Vitesse</button>
+                    </div>
+
+                    <table *ngIf="igsSp3Tab === 'P'">
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Enregistrement</td>
+                            <td><code>P G01</code></td>
+                            <td>P + PRN GPS</td>
+                        </tr>
+                        <tr>
+                            <td>X (km)</td>
+                            <td><code>15023.456789</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Y (km)</td>
+                            <td><code>-22134.789012</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Z (km)</td>
+                            <td><code>9876.543210</code></td>
+                            <td>Position ECEF</td>
+                        </tr>
+                        <tr>
+                            <td>Horloge (µs)</td>
+                            <td><code>-23.456789</code></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table *ngIf="igsSp3Tab === 'V'">
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Enregistrement</td>
+                            <td><code>V G01</code></td>
+                            <td>V + PRN GPS (même satellite que P)</td>
+                        </tr>
+                        <tr>
+                            <td>Ẋ (dm/s)</td>
+                            <td><code>-23.456789</code></td>
+                            <td>Vélocité X — décimètres/seconde</td>
+                        </tr>
+                        <tr>
+                            <td>Ẏ (dm/s)</td>
+                            <td><code>15.123456</code></td>
+                            <td>Vélocité Y</td>
+                        </tr>
+                        <tr>
+                            <td>Ż (dm/s)</td>
+                            <td><code>-8.654321</code></td>
+                            <td>Vélocité Z</td>
+                        </tr>
+                        <tr>
+                            <td>Taux d'horloge</td>
+                            <td><code>0.001234</code></td>
+                            <td>Dérive d'horloge (unité : 10<sup>-4</sup> µs/s)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-content-end pt-3 gap-2">
+                        <button class="custom-btn" (click)="showErrorCode('SP3')">CODES ERREURS</button>
+                        <button class="custom-btn" (click)="showExample('SP3')">EXEMPLE DE FICHIER</button>
+                    </div>
+                </div>
+
+                <div class="file-block">
+                    <div class="file-block-header">
+                        <span class="file-name">IGS CLK</span>
+                        <code class="file-ext">.clk_30s</code>
+                        <span class="file-role">Horloges constellation GPS</span>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Champ</th>
+                            <th>Exemple</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Type</td>
+                            <td><code>AS</code></td>
+                            <td>AS = satellite, AR = récepteur</td>
+                        </tr>
+                        <tr>
+                            <td>Satellite</td>
+                            <td><code>G01</code></td>
+                            <td>Système + PRN</td>
+                        </tr>
+                        <tr>
+                            <td>Époque</td>
+                            <td><code>2010 9 3 0 0 0</code></td>
+                            <td>UTC, intervalle 30 s</td>
+                        </tr>
+                        <tr>
+                            <td>Biais (s)</td>
+                            <td><code>1.234567e-05</code></td>
+                            <td>Correction d'horloge</td>
+                        </tr>
+                        <tr>
+                            <td>Dérive (s/s)</td>
+                            <td><code>2.345e-12</code></td>
+                            <td>Optionnelle</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-content-end pt-3 gap-2">
+                        <button class="custom-btn" (click)="showErrorCode('CLK 30S')">CODES ERREURS</button>
+                        <button class="custom-btn" (click)="showExample('CLK 30S')">EXEMPLE DE FICHIER</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-close" (click)="close.emit()">Fermer</button>
+        </div>
+
+    </div>
+
+    <!-- Example file -->
+    <p-dialog [header]="'Exemple de fichier ' + fileType" [modal]="true" [(visible)]="exampleVisible"
+              (close)="closeExample()">
+
+        <img class="img-fluid" [src]="imgSrc">
+
+    </p-dialog>
+
+
+    <!-- Validation Error Codes -->
+    <p-dialog [header]="'Codes erreurs — ' + errorCodeTitle"
+              [modal]="true"
+              [(visible)]="errorCodeVisible"
+              [style]="{ width: '1080px', maxHeight: '80vh' }"
+              (close)="closeErrorCode()">
+
+        <div *ngFor="let section of errorSections" class="error-section">
+            <p class="error-section-title">{{ section.title }}</p>
+            <table class="error-table">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Cause</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let err of section.errors">
+                    <td><code>{{ err.code }}</code></td>
+                    <td>{{ err.cause }}</td>
+                    <td>{{ err.action }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </p-dialog>
+
+
+</div>
+
+

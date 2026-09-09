@@ -1,0 +1,301 @@
+<app-navbar></app-navbar>
+
+<main class="configurator">
+
+    <!-- ═══════════  Step indicator ═══════════  -->
+
+    <div class="step-indicator">
+        <div class="step-point" *ngFor="let n of [1,2,3,4]" [class.active]="step === n" [class.done]="step > n">
+            {{ n }}
+        </div>
+    </div>
+
+    <!-- ═══════════ Step 1 : Input Files ═══════════ -->
+
+    <section *ngIf="step === 1" class="step-section">
+
+        <div *ngIf="loading_validation" class="validation-overlay">
+            <div class="validation-loader">
+                <div class="spinner"></div>
+                <p>Validation des fichiers...</p>
+            </div>
+        </div>
+
+
+        <h2>Fichiers d'entrée</h2>
+        <div class="subtitle-line">
+            <p class="subtitle">Observations LEO, produits GNSS IGS et orbite de référence.</p>
+            <button class="btn-doc" (click)="showDocFiles = true">Documentation</button>
+        </div>
+
+        <!-- ═════════ RINEX ═════════ -->
+
+        <div class="upload-zone" [class.uploaded]="RINEXFile" [class.invalid]="RINEXerror" (click)="inputRINEX.click()">
+            <span class="upload-label">RINEX</span>
+            <span class="upload-name">{{ RINEXFile ? RINEXFile.name : 'Observations LEO — .rnx' }}</span>
+            <input #inputRINEX type="file" accept=".rnx" hidden (change)="onRINEXFile($event)"/>
+        </div>
+        <p class="file-error" *ngIf="RINEXerror">{{ RINEXerror }}</p>
+
+        <!-- ═════════ RSO SP3 ═════════ -->
+
+        <div class="upload-zone" [class.uploaded]="rsoFiles.length > 0" (click)="inputRSO.click()">
+            <span class="upload-label">RSO</span>
+            <span class="upload-name">{{ rsoFiles.length ? rsoLabel : 'Orbite de référence — 1 ou 2 fichiers .sp3' }}</span>
+            <input #inputRSO type="file" accept=".sp3" multiple hidden (change)="onRSOFiles($event)"/>
+        </div>
+        <p class="file-error" *ngIf="rsoError">{{ rsoError }}</p>
+
+        <!-- ═════════ IGS SP3 ═════════ -->
+
+        <div class="upload-zone" [class.uploaded]="gnssSP3File" [class.invalid]="gnssSP3error"
+             (click)="inputGnssSP3.click()">
+            <span class="upload-label">IGS SP3</span>
+            <span class="upload-name">{{ gnssSP3File ? gnssSP3File.name : 'Orbites GNSS précises — .sp3' }}</span>
+            <input #inputGnssSP3 type="file" accept=".sp3" hidden (change)="onGnssSP3File($event)"/>
+        </div>
+        <p class="file-error" *ngIf="gnssSP3error">{{ gnssSP3error }}</p>
+
+        <!-- ═════════ IGS CLK ═════════ -->
+
+        <div class="upload-zone" [class.uploaded]="gnssCLKFile" [class.invalid]="gnssCLKerror"
+             (click)="inputCLK.click()">
+            <span class="upload-label">IGS CLK</span>
+            <span class="upload-name">{{ gnssCLKFile ? gnssCLKFile.name : 'Horloges GNSS précises — .clk / .clk_30s' }}</span>
+            <input #inputCLK type="file" accept=".clk,.clk_30s" hidden (change)="onGnssCLKFile($event)"/>
+        </div>
+        <p class="file-error" *ngIf="gnssCLKerror">{{ gnssCLKerror }}</p>
+
+    </section>
+
+    <!-- ═══════════ Step 2 : Orbital Model ═══════════ -->
+
+    <section *ngIf="step === 2">
+        <h2>Modèle orbital</h2>
+        <p class="subtitle">Sélectionnez le modèle à utiliser pour cette analyse.</p>
+        <div class="custom-cards">
+            <div class="custom-card"
+                 *ngFor="let m of models"
+                 [class.selected]="selectedModel === m.value"
+                 [class.unactive]="!m.available"
+                 (click)="m.available && (selectedModel = m.value)">
+                <div class="custom-card-title">
+                    <strong>{{ m.value }}</strong>
+                    <span class="badge-soon" *ngIf="!m.available">À implémenter</span>
+                </div>
+                <p>{{ m.description }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ Step 3 : Estimation Strategy ═══════════ -->
+
+    <section *ngIf="step === 3" class="step-section">
+
+        <div *ngIf="loading_validation" class="validation-overlay">
+            <div class="validation-loader">
+                <div class="spinner"></div>
+                <p>Validation des fichiers...</p>
+            </div>
+        </div>
+
+        <h2>Stratégie d'estimation</h2>
+        <p class="subtitle">Choisissez l'algorithme d'estimation ou importez votre propre estimateur.</p>
+        <div class="custom-cards">
+            <div class="custom-card"
+                 *ngFor="let e of estimators"
+                 [class.selected]="selectedEstimator === e.value"
+                 [class.unactive]="!e.available"
+                 (click)="selectedEstimator = e.value">
+                <div class="custom-card-title">
+                    <strong>{{ e.value }}</strong>
+                    <span class="badge-soon" *ngIf="!e.available">À implémenter</span>
+                    <button *ngIf="e.custom" class="btn-doc" (click)="$event.stopPropagation(); showDocumentation()">
+                        Documentation
+                    </button>
+                </div>
+                <p>{{ e.description }}</p>
+            </div>
+        </div>
+
+        <!-- ═══════════ Paramètres d'estimation ═══════════ -->
+
+        <div class="custom-form" style="margin-top: 1.25rem"
+             *ngIf="selectedEstimator === 'Moindres carrés' || selectedEstimator === 'Plugin custom'">
+            <div class="line">
+                <label>Itérations max
+                    <lucide-icon name="info" size="14" class="info-icon"
+                        pTooltip="Nombre maximal d'itérations du solveur LSQ par époque. La convergence est typiquement atteinte en < 5 itérations."
+                        tooltipPosition="top">
+                    </lucide-icon>
+                    <input type="number" [(ngModel)]="maxIter" min="1" max="100" placeholder="10"/>
+                </label>
+                <label>Tolérance (m) <lucide-icon name="info" size="14" class="info-icon" pTooltip="Seuil de convergence en mètres. L'itération s'arrête lorsque la correction de position est inférieure à cette valeur." tooltipPosition="top"></lucide-icon>
+                    <input type="number" [(ngModel)]="tolerance" step="0.0001" min="0" placeholder="0.0001"/>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="upload-zone" *ngIf="selectedEstimator === 'Plugin custom'"
+             [class.uploaded]="estimatorFile"
+             (click)="inputEst.click()"
+             style="margin-top: 1.25rem">
+            <span class="upload-label">.py</span>
+            <span class="upload-name">{{ estimatorFile ? estimatorFile.name : 'Cliquez pour sélectionner votre estimateur Python' }}</span>
+            <input #inputEst type="file" accept=".py" hidden (change)="onEstimatorFile($event)"/>
+        </div>
+        <p class="file-error" *ngIf="estimatorError">{{ estimatorError }}</p>
+    </section>
+
+    <!-- ═══════════ Step 4 : Configuration + Recap ═══════════ -->
+
+    <section *ngIf="step === 4">
+        <h2>Configuration</h2>
+        <p class="subtitle">Nommez votre analyse puis vérifiez la configuration avant de lancer.</p>
+
+        <!-- ═══════════ ANALYSIS NAME ═══════════ -->
+
+        <div class="custom-form" style="margin-top: 1.5rem">
+            <label>Nom de l'analyse
+                <input type="text" [(ngModel)]="name" placeholder="ex. GRACE-FO — Mars 2024"
+                       [class.error]="fieldName.invalid && fieldName.touched"
+                       required #fieldName="ngModel"/>
+                <div *ngIf="fieldName.invalid && fieldName.touched" class="error-text ">
+                    Le titre est obligatoire.
+                </div>
+            </label>
+        </div>
+
+        <!-- ═══════════ MISSION ═══════════ -->
+
+        <div class="custom-form" style="margin-top: 0.5rem">
+            <div class="line-3">
+                <label>Mission
+                    <input type="text" [(ngModel)]="mission_name" placeholder="ex. CHAMP"
+                           [class.error]="fieldMission.invalid && fieldMission.touched"
+                           required #fieldMission="ngModel"/>
+                </label>
+                <label>Année
+                    <input type="number" [(ngModel)]="mission_year" placeholder="2010"
+                           [class.error]="fieldYear.invalid && fieldYear.touched"
+                           required #fieldYear="ngModel"/>
+                </label>
+                <label>Jour (DOY)
+                    <input type="number" [(ngModel)]="mission_day" placeholder="200" min="1" max="366"
+                           [class.error]="fieldDay.invalid && fieldDay.touched"
+                           required #fieldDay="ngModel"/>
+                </label>
+            </div>
+        </div>
+
+        <!-- ═══════════ RECAP ═══════════ -->
+
+        <div class="resume">
+
+            <!-- RINEX -->
+            <div class="resume-line">
+                <span>RINEX</span>
+                <strong>{{ RINEXFile?.name }}</strong>
+            </div>
+
+            <!-- RSO SP3 -->
+            <div class="resume-line" [class.resume-line--col]="rsoFiles.length > 1">
+                <span>RSO</span>
+                <div class="resume-files">
+                    <strong *ngFor="let f of rsoFiles">{{ f.name }}</strong>
+                </div>
+            </div>
+
+            <!-- IGS SP3 -->
+            <div class="resume-line">
+                <span>IGS SP3</span>
+                <strong>{{ gnssSP3File?.name }}</strong>
+            </div>
+
+            <!-- IGS CLOCK -->
+            <div class="resume-line">
+                <span>IGS CLK</span>
+                <strong>{{ gnssCLKFile?.name }}</strong>
+            </div>
+
+            <!-- ORBITAL MODEL -->
+            <div class="resume-line">
+                <span>Modèle orbital</span>
+                <strong>{{ selectedModel }}</strong>
+            </div>
+
+            <!-- ESTIMATOR -->
+            <div class="resume-line">
+                <span>Estimateur</span>
+                <strong>{{ selectedEstimator }}</strong>
+            </div>
+
+            <!-- ESTIMATOR PLUGIN ? -->
+            <div class="resume-line" *ngIf="estimatorFile">
+                <span>Plugin</span>
+                <strong>{{ estimatorFile.name }}</strong>
+            </div>
+        </div>
+
+        <p class="erreur" *ngIf="error">{{ error }}</p>
+    </section>
+
+    <!-- ═══════════ Navigation ═══════════ -->
+
+    <div class="navigation">
+        <button class="custom-btn-secondary"
+                (click)="step === 1 ? router.navigate(['/dashboard']) : previousStep()"
+                [disabled]="loading">
+            {{ step === 1 ? 'Annuler' : '← Retour' }}
+        </button>
+
+        <div class="nav-right">
+
+            <div class="demo-wrapper" *ngIf="step === 1">
+                <button class="btn-demo"
+                        [disabled]="loading_validation"
+                        (click)="$event.stopPropagation(); showDemoDropdown = !showDemoDropdown">
+                    Mission démo <span class="chevron" [class.open]="showDemoDropdown && !loading_validation">↑</span>
+                </button>
+                <div class="demo-menu" *ngIf="showDemoDropdown">
+                    <button *ngFor="let day of availableMissionDays" class="demo-item" (click)="populateDemoData('champ', day)">
+                        <span class="demo-mission">CHAMP — Jour {{ day }}</span>
+                        <span class="demo-date">{{ doyToDate(day, 2010) }}</span>
+                    </button>
+
+                    <!--
+                    <button class="demo-item" (click)="populateDemoData('champ', 200)">
+                        <span class="demo-mission">CHAMP — Jour 200</span>
+                        <span class="demo-date">2010-07-19</span>
+                    </button>
+                    <button class="demo-item" (click)="populateDemoData('champ', 246)">
+                        <span class="demo-mission">CHAMP — Jour 246</span>
+                        <span class="demo-date">2010-09-03</span>
+                    </button>
+                    -->
+
+                </div>
+            </div>
+
+            <button class="custom-btn-primary"
+                    *ngIf="step < stepTotal"
+                    (click)="nextStep()"
+                    [disabled]="!canContinue()">
+                Suivant →
+            </button>
+            <button class="btn-run"
+                    *ngIf="step === stepTotal"
+                    (click)="runAnalysis()"
+                    [disabled]="loading">
+                {{ loading ? 'Envoi en cours…' : 'Lancer l\'analyse' }}
+            </button>
+        </div>
+    </div>
+
+</main>
+
+<!-- ═══════════ DOCUMENTATION ═══════════ -->
+
+<app-file-formats *ngIf="showDocFiles" (close)="showDocFiles = false"></app-file-formats>
+<app-base-estimator *ngIf="showDocEstimator" (close)="showDocEstimator = false"></app-base-estimator>

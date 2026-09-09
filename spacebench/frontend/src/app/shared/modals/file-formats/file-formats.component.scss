@@ -1,0 +1,233 @@
+// Sonnet 4.6 contributed
+
+@use '../modal';
+
+.modal {
+  width: 85vw;
+}
+
+.modal-body {
+  display: flex;
+  gap: 0;
+  padding: 1.75rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.section {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.divider {
+  width: 1px;
+  background: var(--border);
+  margin: 0 1.75rem;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+.entity-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.entity-label {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+
+  &.mission {
+    color: var(--blue);
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+  }
+
+  &.igs {
+    color: var(--purple);
+    background: var(--purple-bg);
+    border: 1px solid var(--purple-border);
+  }
+}
+
+.entity-origin {
+  font-size: var(--font-xs);
+  color: var(--text-dim);
+}
+
+.file-block {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+}
+
+.file-block-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.file-name {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.file-ext {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.file-role {
+  font-size: var(--font-sm);
+  color: var(--text-faint);
+  margin-left: auto;
+}
+
+.badge-truth {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  background: var(--green-bg);
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+}
+
+.file-note {
+  font-size: var(--font-sm);
+  color: var(--text-faint);
+  margin-bottom: 0.65rem;
+  font-style: italic;
+}
+
+.sp3-tabs {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.65rem;
+
+  button {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    font-size: var(--font-xs);
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+    &:hover {
+      color: var(--text-muted);
+      border-color: var(--border-hover);
+    }
+
+    &.active {
+      color: var(--text-bright);
+      border-color: var(--text-muted);
+      background: var(--bg-active);
+    }
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    padding: 0.4rem 0.65rem;
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  td {
+    padding: 0.45rem 0.65rem;
+    color: var(--text-secondary);
+    font-size: var(--font-lg);
+    border-bottom: 1px solid var(--border-faint);
+
+    &:last-child {
+      color: var(--text-muted2);
+      font-style: italic;
+    }
+
+    code {
+      background: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: var(--font-md);
+      color: var(--text-secondary);
+      font-style: normal;
+    }
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+
+// Error Codes
+
+.error-section {
+  margin-bottom: 1.5rem;
+}
+
+.error-section-title {
+  color: var(--text-muted);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.5rem;
+}
+
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+
+  th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  code {
+    font-size: var(--font-xs);
+    color: var(--red);
+    background: var(--red-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+}

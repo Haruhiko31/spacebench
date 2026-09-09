@@ -1,0 +1,22 @@
+services:
+  spacebench-db:
+    ports:
+      - "5432:5432"
+
+  spacebench-frontend:
+    ports:
+      - "8080:80"
+
+  spacebench-backend:
+    ports:
+      - "8000:8000"
+
+  spacebench-pgadmin:
+    ports:
+      - "5050:80"
+
+  spacebench-pod-engine:
+    ports:
+      - "8002:8002"
+    volumes:
+      - upload_data:/backend/uploads:ro

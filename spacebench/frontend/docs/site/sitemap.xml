@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>http://localhost:8001/docs/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/api-reference/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/api-reference/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/getting-started/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/getting-started/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/pod-engine/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/pod-engine/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/pod-engine/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/ui/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/ui/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/ui/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/fr/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/fr/api-reference/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/api-reference/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/fr/getting-started/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/getting-started/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/fr/pod-engine/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/pod-engine/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/pod-engine/"/>
+    </url>
+    <url>
+        <loc>http://localhost:8001/docs/fr/ui/</loc>
+        <lastmod>2026-04-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="http://localhost:8001/docs/fr/ui/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8001/docs/ui/"/>
+    </url>
+</urlset>

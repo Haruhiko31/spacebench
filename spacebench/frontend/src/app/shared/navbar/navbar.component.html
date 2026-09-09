@@ -1,0 +1,28 @@
+<nav class="navbar">
+    <span class="logo" routerLink="/dashboard">SpaceBench</span>
+
+    <div class="nav-liens">
+        <div class="menu-docs">
+
+            <button *ngIf="isDevMode" class="mr-2" pTooltip="Lancer les tests unitaires" tooltipPosition="left" (click)="openTestModal()">
+                <lucide-angular name="bug-play" [size]="16"></lucide-angular>
+            </button>
+
+
+            <button class="lien-nav" (click)="menuDocsOpen = !menuDocsOpen">
+                Documentation
+                <span class="chevron" [class.open]="menuDocsOpen">▾</span>
+            </button>
+
+            <div class="dropdown" *ngIf="menuDocsOpen">
+                <a [href]="docsUrl + '/docs'" target="_blank">Guide utilisateur</a>
+                <a [href]="apiUrl + '/api/docs'" target="_blank">API - Swagger</a>
+                <a [href]="apiUrl + '/api/redoc'" target="_blank">API - ReDoc</a>
+            </div>
+        </div>
+
+        <button class="lien-nav disconnexion" (click)="disconnect()">Déconnexion</button>
+    </div>
+</nav>
+
+<app-unit-tests-run [visible]="modalVisible"></app-unit-tests-run>

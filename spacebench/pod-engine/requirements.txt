@@ -1,0 +1,15 @@
+fastapi==0.110.0
+pydantic_core==2.16.3
+python-dotenv
+SQLAlchemy==2.0.28
+starlette==0.36.3
+typing_extensions==4.10.0
+uvicorn==0.28.0
+websockets==12.0
+starlette
+python-multipart
+pydantic-settings
+asyncpg
+georinex
+numpy
+scipy

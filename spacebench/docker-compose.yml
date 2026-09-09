@@ -1,0 +1,88 @@
+services:
+  spacebench-db:
+    image: postgres:16
+    container_name: spacebench-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: CHANGE_ME_x9pAYwXP6T5pFtBAizps
+      POSTGRES_DB: spacebench
+    volumes:
+      - spacebench_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d spacebench"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - spacebench_network
+
+  spacebench-pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: spacebench-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: demo@default.io
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    depends_on:
+      - spacebench-db
+    networks:
+      - spacebench_network
+
+  spacebench-frontend:
+    build:
+      context: ./frontend
+    container_name: spacebench-frontend
+    volumes:
+      - ./frontend/src/assets/static/img/:/usr/local/apache2/htdocs/assets/static/img/
+    networks:
+      - spacebench_network
+
+  spacebench-backend:
+    build:
+      context: ./backend
+    container_name: spacebench-backend
+    environment:
+      DEVELOPMENT: "false"
+      POSTGRES_HOST: spacebench-db
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: CHANGE_ME_x9pAYwXP6T5pFtBAizps
+      POSTGRES_DB: spacebench
+      POD_ENGINE_URL: http://spacebench-pod-engine:8002/pod
+    volumes:
+      - ./frontend/src/assets/static/img/:/app/frontend/src/assets/static/img/
+      - ./backend/app/img/:/app/img/
+      - upload_data:/app/uploads
+    depends_on:
+      spacebench-db:
+        condition: service_healthy
+      spacebench-frontend:
+        condition: service_started
+    networks:
+      - spacebench_network
+
+  spacebench-pod-engine:
+    build:
+      context: ./pod-engine
+    container_name: spacebench-pod-engine
+    environment:
+      DEVELOPMENT: "false"
+      POSTGRES_HOST: spacebench-db
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: CHANGE_ME_x9pAYwXP6T5pFtBAizps
+      POSTGRES_DB: spacebench
+      POD_ENGINE_URL: http://spacebench-pod-engine:8002/pod
+    depends_on:
+      - spacebench-backend
+    networks:
+      - spacebench_network
+
+networks:
+  spacebench_network:
+    driver: bridge
+
+volumes:
+  spacebench_pgdata:
+  upload_data:

@@ -1,0 +1,71 @@
+<div class="overlay" (click)="close.emit()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h3>Interface CustomEstimator</h3>
+            <div>
+                <button class="mr-4" (click)="downloadTemplate()">Download Example</button>
+                <button class="btn-close" (click)="close.emit()">×</button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <p class="intro">
+                Votre fichier <code>.py</code>
+            </p>
+            <!-- ═══════════════ CODE BLOCK ═══════════════ -->
+<pre>
+<code><span class="comment"># base.py</span>
+<span class="c"># ══ Spacebench base ══════════════════════════════</span>
+
+<span class="keyword">from</span> abc <span class="keyword">import</span> abstractmethod, ABC
+<span class="keyword">from</span> app.services.run_logger <span class="keyword">import</span> RunLogger
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="keyword">class</span> <span class="class">BaseEstimator</span>(ABC):
+    <span class="keyword">def</span> <span class="fn">__init__</span>(self, config, logger: RunLogger):
+        self.config = config
+        self.logger = logger
+        self.previous_state: np.ndarray | <span class="const">None</span> = <span class="const">None</span>
+
+    <span class="decorator">&#64;property</span>
+    <span class="keyword">def</span> <span class="fn">need_minimum_satellites</span>(self) -&gt; int:
+        <span class="keyword">return</span> 4
+
+    <span class="comment"># Kalman filtering which needs previous state</span>
+    <span class="keyword">def</span> <span class="fn">get_previous_state</span>(self, initial_state: np.ndarray) -&gt; None:
+        self.previous_state = initial_state.copy()
+
+    <span class="keyword">def</span> <span class="fn">post_process</span>(self, estimated_state: list[dict]) -&gt; dict:
+        <span class="keyword">return</span> estimated_state.copy()
+
+    <span class="comment"># Class to implement</span>
+    <span class="decorator">&#64;abstractmethod</span>
+    <span class="keyword">def</span> <span class="fn">estimate_epoch</span>(self,epoch_obs: dict,initial_state: np.ndarray) -&gt; tuple[np.ndarray, dict]:
+        <span class="keyword">pass</span>
+</code>
+<code><span class="comment"># custom_estimator.py</span>
+<span class="c"># ══ Your implementation ══════════════════════════════</span>
+
+<span class="keyword">const <span class="const">C</span></span> = 299792458
+
+<span class="keyword">class</span> <span class="class">CustomEstimator</span>(<span class="class">BaseEstimator</span>):
+
+    <span class="keyword">def</span> <span class="fn">estimate_epoch</span>(self,epoch_obs: dict,initial_state: np.ndarray) -&gt; tuple[np.ndarray, dict]:
+        estimated_state = initial_state.copy()
+        metadata = &#123;&#125;
+        <span class="comment"># Some algorithm here</span>
+
+        <span class="keyword">return</span> estimated_state, metadata
+</code>
+</pre>
+        </div>
+
+
+
+        <div class="modal-footer">
+            <button class="btn-close" (click)="close.emit()">Fermer</button>
+        </div>
+
+    </div>
+</div>

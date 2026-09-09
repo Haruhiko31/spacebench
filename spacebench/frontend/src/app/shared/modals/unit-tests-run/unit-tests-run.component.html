@@ -1,0 +1,84 @@
+<p-dialog
+        [(visible)]="visible"
+        (onHide)="close()"
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+        styleClass="tests-dialog"
+        [style]="{ width: '680px' }">
+
+    <ng-template pTemplate="header">
+        <div class="dialog-header">
+            <span class="dialog-title">Unit Tests</span>
+            <div class="dialog-summary" *ngIf="tests.length > 0">
+                <span class="badge success"><lucide-angular name="check-check" [size]="15"></lucide-angular>
+                    {{ passCount }}</span>
+                <span class="badge failed"><lucide-angular name="x" [size]="15"></lucide-angular>
+                    {{ failCount + errorCount }}</span>
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="tests-body">
+
+        <div class="run-bar">
+            <button class="run-btn" (click)="runTests()" [disabled]="running">
+                <lucide-angular [name]="running ? 'loader-2' : 'play'" [size]="14"
+                                [class.spin]="running"></lucide-angular>
+                {{ running ? 'Running…' : 'Run Tests' }}
+            </button>
+            <span class="run-meta" *ngIf="tests.length > 0">
+                {{ passCount }}/{{ tests.length }} passed
+            </span>
+        </div>
+
+        <div class="console">
+
+            <div class="console-empty" *ngIf="tests.length === 0 && !running">
+                Press <strong>Run Tests</strong> to start.
+            </div>
+
+            <ng-container *ngFor="let t of tests">
+                <div class="test-line"
+                     [class.is-pass]="t.status === 'PASSED'"
+                     [class.is-fail]="t.status === 'FAILED' || t.status === 'ERROR'"
+                     (click)="t.log ? t.expanded = !t.expanded : null"
+                     [class.clickable]="t.log">
+
+                    <span class="test-status">
+                        <lucide-angular *ngIf="t.status === 'PASSED'" name="check" [size]="13"></lucide-angular>
+                        <lucide-angular *ngIf="t.status === 'FAILED' || t.status === 'ERROR'" name="x" [size]="13"></lucide-angular>
+                    </span>
+
+                    <div class="test-info">
+                        <span class="test-name">{{ t.name }}</span>
+                        <span class="test-file">{{ t.file }}</span>
+                    </div>
+
+                    <span class="test-badge"
+                          [class.pass]="t.status === 'PASSED'"
+                          [class.fail]="t.status === 'FAILED' || t.status === 'ERROR'">
+                        {{ t.status }}
+                    </span>
+
+                    <lucide-angular *ngIf="t.log"
+                                    [name]="t.expanded ? 'chevron-up' : 'chevron-down'"
+                                    [size]="12" class="expand-icon">
+                    </lucide-angular>
+                </div>
+
+                <div class="failure-log" *ngIf="t.expanded && t.log">
+                    <pre>{{ t.log }}</pre>
+                </div>
+            </ng-container>
+
+
+            <div class="test-line is-running" *ngIf="running">
+                <lucide-angular name="loader-2" [size]="13" class="spin"></lucide-angular>
+                <span class="test-name">collecting…</span>
+            </div>
+
+        </div>
+    </div>
+
+</p-dialog>

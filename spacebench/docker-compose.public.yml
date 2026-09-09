@@ -1,0 +1,19 @@
+# docker-compose.public.yml
+services:
+  spacebench-frontend:
+    expose:
+      - "80"
+
+  spacebench-backend:
+    expose:
+      - "8000"
+
+  spacebench-pgadmin:
+    expose:
+      - "80"
+
+  spacebench-pod-engine:
+    expose:
+      - "8002"
+    volumes:
+      - upload_data:/app/uploads:ro

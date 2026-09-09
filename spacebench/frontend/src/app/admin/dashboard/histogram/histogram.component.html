@@ -1,0 +1,136 @@
+<div class="histogram">
+
+    <!-- ══════════ Header ══════════ -->
+
+    <div class="header">
+        <span class="title">RMS par analyse</span>
+
+        <!-- ══════════ Controls ══════════ -->
+        <div class="controls">
+
+            <!-- SORT -->
+
+            <div class="selector">
+                <button [class.active]="sortIcon !== 'arrow-down-up'" (click)="sortHistogram()" pTooltip="Trier la vue" tooltipPosition="bottom">
+                    <lucide-angular [name]="sortIcon" [size]="16"></lucide-angular>
+                </button>
+                <button [class.active]="dataSortIcon !== 'arrow-down-up'" (click)="sortDataset()" pTooltip="Trier le dataset" tooltipPosition="bottom">
+                    <lucide-angular [name]="dataSortIcon" [size]="16"></lucide-angular>
+                </button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- METRIC SELECTOR -->
+
+            <div class="selector">
+                <button *ngFor="let m of metrics"
+                        [class.active]="activeMetrics === m.key"
+                        (click)="changeMetric(m.key)">
+                    {{ m.label }}
+                </button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- LIMITS -->
+
+            <div class="selector">
+                <button *ngFor="let l of limits"
+                        [class.active]="activeLimit === l.value && !manualSelection && customInputValue === null"
+                        (click)="changeLimit(l.value)">
+                    {{ l.label }}
+                </button>
+                <input class="custom-limit-input"
+                       [class.active]="customInputValue !== null"
+                       [class.exceeded]="customLimitExceeded"
+                       type="number"
+                       min="1"
+                       placeholder="Custom"
+                       [(ngModel)]="customInputValue"
+                       (input)="applyCustom()" />
+                <span class="custom-limit-hint" *ngIf="customLimitExceeded">max<!-- : {{ maxAnalysis }} --></span>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- MISSION SELECTOR -->
+
+            <div class="dropdown-missions">
+                <button class="btn-missions" [class.active]="manualSelection"
+                        (click)="dropdownOpen = !dropdownOpen">
+                    {{ labelDropdown }} ▾
+                </button>
+
+                <div class="dropdown-list" [class.extended]="extended" *ngIf="dropdownOpen">
+
+                    <!-- Search -->
+                    <div class="dropdown-search">
+                        <input type="text" [(ngModel)]="search" placeholder="Rechercher…"/>
+                    </div>
+
+                    <!-- Model FILTER -->
+                    <div class="dropdown-filters">
+                        <button *ngFor="let m of modeles"
+                                [class.active]="modelFilter === m"
+                                (click)="toggleModelFilter(m)">
+                            {{ m }}
+                        </button>
+                    </div>
+
+                    <!-- Estimator FILTER -->
+                    <div class="dropdown-filters">
+                        <button *ngFor="let e of estimateurs"
+                                [class.active]="estimatorFilter === e"
+                                (click)="toggleEstimatorFilter(e)">
+                            {{ e }}
+                        </button>
+                    </div>
+
+                    <div class="dropdown-seperator"></div>
+
+                    <!-- Select all -->
+                    <div class="dropdown-all">
+                        <button (click)="unselectAll()">Tout désélectionner</button>
+                        <button (click)="selectAll()" [class.active]="allSelected">
+                            Tout sélectionner ({{ filteredDatas.length }})
+                        </button>
+                    </div>
+
+                    <!-- List of filters missions -->
+
+                    <label *ngFor="let a of visibleAnalysis">
+                        <input type="checkbox"
+                               [checked]="selectedMission.has(a.name)"
+                               (change)="toggleMission(a.name)"/>
+                        <div class="mission-info">
+                            <span class="mission-nom">{{ a.name }}</span>
+                            <span class="mission-meta">{{ a.orbital_model }} - {{ a.estimator_type }}</span>
+                        </div>
+                    </label>
+
+                    <div class="dropdown-load-more" *ngIf="hasMoreMissions">
+                        <button (click)="loadMoreMissions()">
+                            Voir plus ({{ filteredDatas.length - visibleAnalysisCount }} restants)
+                        </button>
+                    </div>
+
+                    <p class="empty-list" *ngIf="filteredDatas.length === 0">Aucun résultat</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Graph -->
+
+    <div class="canvas-wrapper" [class.extended]="extended">
+        <div class="skeleton" *ngIf="loading">
+            <div class="skeleton-bars">
+                <div class="skeleton-bar"></div>
+            </div>
+            <div class="skeleton-axis"></div>
+        </div>
+        <canvas #canvas [style.opacity]="loading ? 0 : 1"></canvas>
+    </div>
+</div>

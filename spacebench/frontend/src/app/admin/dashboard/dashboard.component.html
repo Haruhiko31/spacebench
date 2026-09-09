@@ -1,0 +1,175 @@
+<app-navbar></app-navbar>
+
+<main class="content " [class.wide]="wideView">
+
+    <!-- ═══════════ HEADER ═══════════ -->
+
+    <div class="header">
+        <h2>Analyses POD</h2>
+        <div class="header-actions">
+            <div class="views">
+                <button [class.active]="wideView" (click)="toggleViewWidth()">Vue Large</button>
+                <button [class.active]="showDatatable" [disabled]="showDatatable && !showHistogram"
+                        (click)="toggleDatatable()">Tableau
+                </button>
+                <button [class.active]="showHistogram" [disabled]="showHistogram && !showDatatable"
+                        (click)="toggleHistogram()">Histogramme
+                </button>
+            </div>
+            <button class="custom-btn-primary" (click)="newAnalysis()">+ Nouvelle analyse</button>
+        </div>
+    </div>
+
+
+    <!-- ═══════════ DATA TABLE ═══════════ -->
+
+    <div class="section" [class.mask]="!showDatatable">
+        <div class="section-inner " [style.overflow]="this.showDatatable ? 'visible' : 'hidden'">
+            <p-table #dt
+                     [columns]="selectedColumns"
+                     [value]="analysis"
+                     [lazy]="true"
+                     [totalRecords]="totalRecords"
+                     (onLazyLoad)="lazyLoad($event)"
+                     [paginator]="true"
+                     [rows]="parPage"
+                     [resizableColumns]="true"
+                     [rowsPerPageOptions]="[5, 10, 25, 50]"
+                     [loading]="loading"
+                     [(selection)]="selectedRows"
+                     (selectionChange)="onSelectionChange()"
+                     styleClass="custom-table">
+
+                <!-- TOOLBAR -->
+
+                <ng-template #caption>
+                    <div class="table-actions">
+
+                        <div class="actions-left">
+                            <span [pTooltip]="selectedRows.length < 2 ? 'Sélectionnez 2 lignes' : selectedRows.length > 2 ? 'Maximum 2 analyses!' : !allFinished() ? 'Vous ne pouvez comparer que des analyses terminées!' : ''"
+                                  tooltipPosition="top">
+                                <button [disabled]="selectedRows.length !== 2 || !allFinished() " (click)="compareSelected()">
+                                    <lucide-icon name="scale" size="14"></lucide-icon>
+                                    Comparer
+                                </button>
+                            </span>
+
+                            <span [pTooltip]="selectedRows.length === 0 ? 'Sélectionnez des lignes' : !allFinished() ? 'Vos analyses doivent être terminées!' : ''"
+                                  tooltipPosition="top">
+                                <button [disabled]="selectedRows.length === 0 || selectedRows.length > 0 && !allFinished()" (click)="showInHistogram()">
+                                    <lucide-icon name="chart-no-axes-column-increasing" size="14"></lucide-icon>
+                                    Montrer dans l'histogramme
+                                </button>
+                            </span>
+
+                        </div>
+
+                        <div class="actions-right">
+                            <p-multiselect
+                                    [options]="statusOptions"
+                                    [(ngModel)]="selectedStatuses"
+                                    (ngModelChange)="onStatusFilterChange()"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    selectedItemsLabel="{0} statuts"
+                                    [style]="{ 'min-width': '120px' }"
+                                    placeholder="Filtrer par statut">
+                            </p-multiselect>
+
+                            <p-multiselect
+                                    [options]="cols"
+                                    [(ngModel)]="selectedColumns"
+                                    (ngModelChange)="onColumnsChange()"
+                                    optionLabel="header"
+                                    selectedItemsLabel="{0} colonnes"
+                                    [style]="{ 'min-width': '100px' }"
+                                    placeholder="Colonnes">
+                            </p-multiselect>
+
+                            <button type="button" class="custom-btn-primary results" (click)="showResults()"
+                                    pTooltip="Montrer les résultats" [class.active]="shownResults">
+                                <lucide-angular name="microscope" [size]="16"></lucide-angular>
+                            </button>
+
+                            <button type="button" class="custom-btn-primary export" (click)="dt.exportCSV()"
+                                    pTooltip="Télécharger les données">
+                                <lucide-angular name="download" [size]="16"></lucide-angular>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </ng-template>
+
+                <!-- Table HEADER -->
+
+                <ng-template pTemplate="header" #header let-columns>
+                    <tr>
+                        <th style="width: 4rem">
+                            <p-tableHeaderCheckbox/>
+                        </th>
+
+                        <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [class.short]="col.field == 'mission_year' || col.field == 'mission_day' || col.field == 'status'">
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"/>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <!-- Table BODY -->
+
+                <ng-template pTemplate="body" let-columns="columns" let-a let-i="rowIndex">
+                    <tr [style.--i]="i % currentPageSize" [class.selected]="isSelected(a.id)">
+
+                        <td>
+                            <p-tableCheckbox [value]="a"/>
+                        </td>
+
+
+                        <td *ngFor="let col of columns">
+                            @if (col.field === 'status') {
+                                <span class="badge" [class]="a.status | lowercase">{{ a.status }}</span>
+                            } @else {
+                                {{ a[col.field] }}
+                                <span *ngIf="['rms_3d', 'rms_along', 'rms_cross', 'rms_radial'].includes(col.field)"> cm</span>
+                            }
+                        </td>
+                        <td>
+                          <span [pTooltip]="a.status !== 'En cours' ? 'Voir les logs complets' : 'Attendez la fin de l\'analyse'"
+                                tooltipPosition="right"
+                                class="show-log"
+                                [class.disabled]="a.status !== 'En cours'"
+                                (click)="a.status !== 'En cours' && openLogs(a)">
+                            <lucide-angular name="search-check" size="16"></lucide-angular>
+                          </span>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <!-- EMPTY Table placeholder -->
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6" class="vide">Aucune analyse pour le moment. Créez-en une nouvelle.</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+    </div>
+
+    <!-- ═══════════ HISTOGRAM ═══════════ -->
+
+    <app-histogram class="graph" *ngIf="showHistogram" [extended]="!showDatatable" [selectedNames]="selectedRowsToString"></app-histogram>
+
+</main>
+
+<!-- ═══════════ Logs MODAL ═══════════ -->
+
+<app-log-analysis
+        *ngIf="selectedAnalysis"
+        [analysisInput]="selectedAnalysis!"
+        [comparisonInput]="comparisonAnalysis"
+        (close)="selectedAnalysis = null; analysisService.getRuns()">
+</app-log-analysis>

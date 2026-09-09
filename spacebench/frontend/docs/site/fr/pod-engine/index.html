@@ -1,0 +1,946 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Open-source framework for precise orbit determination (LEO-POD Benchmark Platform)">
+      
+      
+        <meta name="author" content="Raphaël Louys">
+      
+      
+        <link rel="canonical" href="http://localhost:8001/docs/fr/pod-engine/">
+      
+      
+        <link rel="prev" href="../ui/">
+      
+      
+        <link rel="next" href="../api-reference/">
+      
+      
+        
+          <link rel="alternate" href="../../pod-engine/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/spacebench-logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Vue d'ensemble - SpaceBench Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#moteur-pod" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../" title="SpaceBench Documentation" class="md-header__button md-logo" aria-label="SpaceBench Documentation" data-md-component="logo">
+      
+  <img src="../../assets/images/spacebench-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SpaceBench Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vue d'ensemble
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../pod-engine/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Partager" aria-label="Partager" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="SpaceBench Documentation" class="md-nav__button md-logo" aria-label="SpaceBench Documentation" data-md-component="logo">
+      
+  <img src="../../assets/images/spacebench-logo.svg" alt="logo">
+
+    </a>
+    SpaceBench Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interface utilisateur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moteur POD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Moteur POD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fichiers-dentree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fichiers d'entrée
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fichiers d&#39;entrée">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#de-la-mission-gfz-isdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De la mission (GFZ / ISDC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de-ligs-cddis-produits-precis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De l'IGS / CDDIS (produits précis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-des-donnees-de-test-champ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources des données de test (CHAMP)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sources des données de test (CHAMP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observations-rinex-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations RINEX 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orbite-de-reference-rso-sp3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orbite de référence RSO SP3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produits-precis-igs-sp3-clk_30s-cddis-repro2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Produits précis IGS SP3 + CLK_30S (CDDIS repro2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-des-noms-de-fichiers-igs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lecture des noms de fichiers IGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modeles-orbitaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modèles orbitaux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estimateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estimateurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-asynchrone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline asynchrone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline asynchrone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phases-du-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases du pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statuts-dune-analyse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statuts d'une analyse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="moteur-pod">Moteur POD<a class="headerlink" href="#moteur-pod" title="Permanent link">&para;</a></h1>
+<p>Le Moteur POD est le noyau de calcul de SpaceBench. Lorsqu'une analyse est soumise, le backend exécute un pipeline multi-phases en tant que tâche de fond asynchrone.</p>
+<hr />
+<h2 id="fichiers-dentree">Fichiers d'entrée<a class="headerlink" href="#fichiers-dentree" title="Permanent link">&para;</a></h2>
+<p>Le pipeline nécessite exactement <strong>4 fichiers d'entrée</strong> provenant de deux entités sources.</p>
+<h3 id="de-la-mission-gfz-isdc">De la mission (GFZ / ISDC)<a class="headerlink" href="#de-la-mission-gfz-isdc" title="Permanent link">&para;</a></h3>
+<p><strong>Observations RINEX 2</strong> (<code>.rnx</code>)</p>
+<p>Observations du récepteur GPS embarqué enregistrées par le satellite LEO. Contient les pseudodistances (C1/P1/P2), la phase porteuse (L1/L2) et les mesures Doppler. Les numéros PRN sont listés sans le préfixe <code>G</code>.</p>
+<p><img alt="RINEX 2 file format" src="../assets/images/RINEX%202.svg" /></p>
+<p><strong>RSO SP3 — Orbite Standard de Référence</strong> (<code>.sp3</code>)</p>
+<p>La trajectoire de référence de vérité terrain pour le satellite LEO. Position en ECEF (km) et vitesse (dm/s). Le champ d'horloge satellite est fixé à <code>999999.999999</code> (absent). Chaque fichier couvre typiquement environ 26 heures, avec deux arcs chevauchants par jour. Pour les données de test CHAMP fournies, ce fichier provient de GFZ et l'identifiant satellite est <code>L06</code>.</p>
+<p><img alt="SP3 file format" src="../assets/images/SP3.svg" /></p>
+<h3 id="de-ligs-cddis-produits-precis">De l'IGS / CDDIS (produits précis)<a class="headerlink" href="#de-ligs-cddis-produits-precis" title="Permanent link">&para;</a></h3>
+<p><strong>IGS SP3 — orbites GPS précises</strong> (<code>.sp3</code>)</p>
+<p>Orbites précises des satellites GPS (G01–G32) à intervalles de 15 minutes, issues de la solution retraitée IGS repro2. Convention de nommage des fichiers : <code>igsWWWWD.sp3</code> (semaine GPS sur 4 chiffres + jour de la semaine, 0 = dimanche).</p>
+<p><strong>IGS CLK_30S — horloges GPS précises</strong> (<code>.clk_30s</code>)</p>
+<p>Corrections précises des horloges des satellites GPS à intervalles de 30 secondes. Utilise les enregistrements <code>AS</code>. Doit provenir de la <strong>même solution hebdomadaire</strong> que le fichier IGS SP3.</p>
+<p><img alt="CLK 30S file format" src="../assets/images/CLK%2030S.svg" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Pourquoi CLK_30S est obligatoire</p>
+<p>L'interpolation des valeurs d'horloge SP3 à 15 minutes introduit à elle seule environ 10 cm d'erreur. Le fichier CLK_30S à 30 secondes est indispensable pour maintenir la correction d'horloge satellite au niveau centimétrique (Montenbruck &amp; Gill, 2005).</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Pourquoi les enregistrements AR ne sont pas utilisés</p>
+<p>En POD non-différencié (zéro-différence), l'horloge du récepteur LEO (<code>δt_LEO</code>) est estimée époque par époque comme inconnue — elle n'est jamais lue depuis un fichier. Les horloges des satellites GPS (<code>δt_S</code>) sont corrigées via les enregistrements <code>AS</code> du fichier CLK_30S. Les enregistrements <code>AR</code> (horloges de stations au sol) ne sont pertinents qu'en POD doublement différencié, qui nécessite un réseau de stations de référence au sol non utilisé ici.</p>
+</div>
+<hr />
+<h2 id="sources-des-donnees-de-test-champ">Sources des données de test (CHAMP)<a class="headerlink" href="#sources-des-donnees-de-test-champ" title="Permanent link">&para;</a></h2>
+<p>Les fichiers d'exemple fournis avec SpaceBench couvrent deux jours d'observation CHAMP.</p>
+<h3 id="observations-rinex-2">Observations RINEX 2<a class="headerlink" href="#observations-rinex-2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Jour</th>
+<th>Archive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D246 (2010-09-03)</td>
+<td><a href="https://isdc-data.gfz.de/orbit/L06/RSO/2010/246/">isdc-data.gfz.de/orbit/L06/RSO/2010/246/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Spécification : <a href="https://files.igs.org/pub/data/format/rinex210.txt">RINEX 2.10</a></p>
+<h3 id="orbite-de-reference-rso-sp3">Orbite de référence RSO SP3<a class="headerlink" href="#orbite-de-reference-rso-sp3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Jour</th>
+<th>Archive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D246 / D200</td>
+<td><a href="https://isdc-data.gfz.de/champ/OG/Level1/SST/2010/">isdc-data.gfz.de/champ/OG/Level1/SST/2010/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Spécification : <a href="https://files.igs.org/pub/data/format/sp3c.txt">SP3-c</a></p>
+<h3 id="produits-precis-igs-sp3-clk_30s-cddis-repro2">Produits précis IGS SP3 + CLK_30S (CDDIS repro2)<a class="headerlink" href="#produits-precis-igs-sp3-clk_30s-cddis-repro2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Jour</th>
+<th>Semaine GPS</th>
+<th>Archive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D246 (2010-09-03)</td>
+<td>Semaine 1599</td>
+<td><a href="https://cddis.nasa.gov/archive/gnss/products/repro2/1599/">cddis.nasa.gov/…/repro2/1599/</a></td>
+</tr>
+<tr>
+<td>D200 (2010-07-19)</td>
+<td>Semaine 1593</td>
+<td><a href="https://cddis.nasa.gov/archive/gnss/products/1593/">cddis.nasa.gov/…/1593/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Spécifications : <a href="https://files.igs.org/pub/data/format/sp3c.txt">SP3-c</a> · <a href="https://files.igs.org/pub/data/format/rinex_clock304.txt">RINEX Clock 3.04</a></p>
+<h3 id="lecture-des-noms-de-fichiers-igs">Lecture des noms de fichiers IGS<a class="headerlink" href="#lecture-des-noms-de-fichiers-igs" title="Permanent link">&para;</a></h3>
+<p>Les produits IGS suivent la convention de nommage <code>igsWWWWD</code>, où <code>WWWW</code> est la semaine GPS sur 4 chiffres et <code>D</code> est le jour de la semaine (0 = dimanche, 1 = lundi … 6 = samedi).</p>
+<p><strong>Exemple :</strong> <code>igs15931</code> → semaine GPS 1593, jour 1 (lundi) → 2010-07-19 (D200)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CDDIS requiert un compte gratuit pour télécharger les fichiers.</p>
+</div>
+<hr />
+<h2 id="modeles-orbitaux">Modèles orbitaux<a class="headerlink" href="#modeles-orbitaux" title="Permanent link">&para;</a></h2>
+<p>Le modèle orbital définit comment la trajectoire du satellite est paramétrée pendant l'estimation.</p>
+<hr />
+<h2 id="estimateurs">Estimateurs<a class="headerlink" href="#estimateurs" title="Permanent link">&para;</a></h2>
+<p>L'estimateur résout les équations d'observation et produit la trajectoire estimée.</p>
+<hr />
+<h2 id="pipeline-asynchrone">Pipeline asynchrone<a class="headerlink" href="#pipeline-asynchrone" title="Permanent link">&para;</a></h2>
+<p>Lorsqu'une analyse est soumise, le backend retourne immédiatement un identifiant d'analyse et lance le pipeline comme <strong>tâche de fond</strong> (FastAPI <code>BackgroundTasks</code>). Le frontend ne reste pas bloqué en attente des résultats.</p>
+<h3 id="phases-du-pipeline">Phases du pipeline<a class="headerlink" href="#phases-du-pipeline" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 — Init</strong></td>
+<td>Enregistrement de l'analyse en BDD, statut passé à <code>running</code>, modèle orbital et estimateur journalisés</td>
+</tr>
+<tr>
+<td><strong>2 — Validation</strong></td>
+<td>Vérification du format des fichiers d'entrée (validateurs : <code>Sp3Validator</code>, <code>RnxValidator</code>, <code>ClkValidator</code>)</td>
+</tr>
+<tr>
+<td><strong>3 — Parsing des fichiers</strong></td>
+<td>Fichier d'observations RINEX parsé (époques comptées) ; orbites IGS SP3, horloges CLK_30S et arcs de référence RSO (1/2, 2/2) chargés</td>
+</tr>
+<tr>
+<td><strong>4 — Modèle orbital</strong></td>
+<td>Trajectoire du satellite paramétrée selon le modèle sélectionné (Cinématique, Dynamique ou Réduit-Dynamique)</td>
+</tr>
+<tr>
+<td><strong>5 — Estimation</strong></td>
+<td>Solveur itératif jusqu'à convergence</td>
+</tr>
+<tr>
+<td><strong>6 — Résultats</strong></td>
+<td>RMS 3D / Radial / Along / Cross calculés par rapport au RSO, stockés en BDD, statut passé à <code>done</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="statuts-dune-analyse">Statuts d'une analyse<a class="headerlink" href="#statuts-dune-analyse" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pending</code></td>
+<td>Analyse créée, pipeline pas encore démarré</td>
+</tr>
+<tr>
+<td><code>running</code></td>
+<td>Pipeline en cours</td>
+</tr>
+<tr>
+<td><code>done</code></td>
+<td>Pipeline terminé avec succès, résultats RMS disponibles</td>
+</tr>
+<tr>
+<td><code>failed</code></td>
+<td>Le pipeline a rencontré une erreur irrécupérable</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Raphaël Louys &mdash; Released under the <a href='https://opensource.org/licenses/MIT' target='_blank'>MIT License</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/rlouys/IHDCM050_Memoire_2025-6" target="_blank" rel="noopener" title="SpaceBench on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:contact@harutech.be" target="_blank" rel="noopener" title="Contact Raphaël Louys" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.expand", "navigation.sections", "navigation.tracking", "toc.integrate", "content.code.copy", "content.code.annotate", "search.highlight", "search.share", "search.suggest", "header.autohide", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../js/config.js"></script>
+      
+    
+  </body>
+</html>

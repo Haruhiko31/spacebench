@@ -1,0 +1,19 @@
+════════════ RINEX RSO ════════════
+https://isdc-data.gfz.de/orbit/L06/RSO/2010/246/
+SPEC : https://files.igs.org/pub/data/format/rinex210.txt
+
+════════════ RSO ════════════
+https://isdc-data.gfz.de/champ/OG/Level1/SST/2010/
+SPEC : https://files.igs.org/pub/data/format/sp3c.txt
+
+════════════ CLK & SP3 ════════════ CDDIS repro2
+
+https://cddis.nasa.gov/archive/gnss/products/repro2/1599/  → WEEK 1599 = D246 of 2010 = 3th of Septembre, 2010
+https://cddis.nasa.gov/archive/gnss/products/1593/ → WEEK 1593 = D200 of 2010 = 19th of July, 2010
+
+SPEC CLK : https://files.igs.org/pub/data/format/rinex_clock304.txt
+SPEC SP3 : https://files.igs.org/pub/data/format/sp3c.txt
+
+
+How to read files ?
+igs15931 → igs week 1593, 1st day of the week.

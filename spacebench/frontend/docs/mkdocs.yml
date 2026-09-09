@@ -1,0 +1,118 @@
+site_name: SpaceBench Documentation
+site_description: Open-source framework for precise orbit determination (LEO-POD Benchmark Platform)
+site_author: Raphaël Louys
+site_url: http://localhost:8080/docs/
+use_directory_urls: true
+
+docs_dir: docs
+extra_javascript:
+  - js/config.js
+extra_css:
+  - assets/stylesheets/extra.css
+
+# ══════════════════ PLUGINS ══════════════════
+plugins:
+  - search
+  - i18n:
+      default_language: en
+      languages:
+        - locale: en
+          default: true
+          name: English
+        - locale: fr
+          name: Français
+          nav_translations:
+            Home: Accueil
+            Getting Started: Démarrage rapide
+            Software Architecture: Architecture logicielle
+            User Interface: Interface utilisateur
+            Backend: Backend
+            API Reference: Référence API
+            Demo Data: Données de démonstration
+            Error List : Codes d'erreurs
+            Unit Test List : Tests unitaires
+            POD Engine: Moteur POD
+            Overview: Vue d'ensemble
+
+# ══════════════════ THEME SETTINGS ══════════════════
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.expand
+    - navigation.sections
+    - navigation.tracking
+    - toc.integrate
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.share
+    - search.suggest
+    - header.autohide
+    - navigation.top
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  logo: assets/images/spacebench-logo.svg
+  favicon: assets/images/spacebench-logo.svg
+
+# ══════════════════ NAVIGATION ══════════════════
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Software Architecture: architecture.md
+  - Backend: backend.md
+  - User Interface: ui.md
+  - POD Engine: pod-engine.md
+  - API Reference: api-reference.md
+  - Demo Data: demo-data.md
+  - Error List : error-list.md
+  - Unit Test List : unit-test.md
+
+
+# ══════════════════ MARKDOWN ══════════════════
+markdown_extensions:
+  - admonition
+  - footnotes
+  - def_list
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.snippets
+
+copyright: "Copyright &copy; 2025 Raphaël Louys &mdash; Released under the <a href='https://opensource.org/licenses/MIT' target='_blank'>MIT License</a>"
+
+# ══════════════════ EXTRA INFO (FOOTER, LINKS) ══════════════════
+extra:
+  social:
+    - icon: material/github
+      link: https://github.com/rlouys/IHDCM050_Memoire_2025-6
+      name: SpaceBench on GitHub
+    - icon: material/email
+      link: mailto:contact@harutech.be
+      name: Contact Raphaël Louys
